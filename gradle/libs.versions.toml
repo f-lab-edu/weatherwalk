@@ -3,15 +3,18 @@
 agp = "9.4.1"
 kotlin = "2.4.20"
 coreKtx = "1.19.1"
-ksp = "2.4.4"
+ksp = "2.3.10"
 
 #DEPENDENCY INJECTION
 hilt = "2.60.1"
-hilt-compiler = "2.57.1"
-hilt-navigation-compose ="1.2.0"
+hilt-compiler = "2.60.1"
+hilt-navigation-compose ="1.4.0"
 
 #LOCAL_DATABASE
 room ="3.0.3"
+
+#NETWORK
+retrofit = "3.1.0-SNAPSHOT"
 
 #WORK
 work = "2.12.0"
@@ -31,6 +34,7 @@ composeBom = "2026.09.00"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -44,15 +48,16 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-hilt-android = { group = "com.google.dagger:hilt-android", name = "android-hilt", version.ref = "hilt" }
-hilt-android-compiler  = { group ="com.google.dagger:hilt-android-compiler" , name = "android-hilt-compiler", version.ref = "hilt-compiler" }
-hilt-navigation-compose = { group ="androidx.hilt:hilt-navigation-compose" , name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler  = { group ="com.google.dagger" , name = "hilt-android-compiler", version.ref = "hilt-compiler" }
+hilt-navigation-compose = { group ="androidx.hilt" , name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 
-room = { group = "androidx.room3:room3-runtime" , name = "room", version.ref = "room" }
-room-compiler = { group = "androidx.room3:room3-compiler" , name = "room-compiler", version.ref = "room" }
+room = { group = "androidx.room3" , name = "room3-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room3" , name = "room3-compiler", version.ref = "room" }
 
-work = { group = "androidx.work:work-runtime-ktx" , name = "android-work", version.ref = "work" }
+work = { group = "androidx.work" , name = "work-runtime-ktx", version.ref = "work" }
 
+retrofit ={ group = "com.squareup.retrofit2" , name = "retrofit", version.ref = "retrofit" }
 
 
 [plugins]

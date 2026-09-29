@@ -2,11 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.android.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.hye.weatherwalk"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.hye.weatherwalk"
@@ -61,4 +63,24 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    /*hilt*/
+    implementation(libs.hilt.android )
+    implementation(libs.hilt.android.compiler )
+    implementation(libs.hilt.navigation.compose )
+
+    /*local-database*/
+    implementation(libs.room)
+    implementation(libs.room.compiler)
+
+    /*workManger*/
+    implementation(libs.work)
+
+    /*network*/
+    implementation(libs.retrofit)
+
+
+
+
+
 }
