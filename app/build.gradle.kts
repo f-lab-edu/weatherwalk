@@ -83,9 +83,13 @@ dependencies {
     /*network*/
     implementation(libs.retrofit)
     implementation(libs.retrofit.convertor)
+    implementation(libs.loggin.interceptor)
+
 
 
     implementation(libs.kotlinx.serialization.json)
+
+
 
 
 }

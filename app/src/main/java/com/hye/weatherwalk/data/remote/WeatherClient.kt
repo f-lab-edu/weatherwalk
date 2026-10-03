@@ -2,6 +2,8 @@ package com.hye.weatherwalk.data.remote
 
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
@@ -16,12 +18,22 @@ object WeatherClient {
 
     }
 
-    val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
+        .build()
+
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
         .addConverterFactory(
-            Json.asConverterFactory(
-                "application/json; charset=utf-8".toMediaType()))
-    .build()
+            json.asConverterFactory(
+                "application/json; charset=utf-8".toMediaType()
+            )
+        )
+        .build()
 
     val weatherService = retrofit.create(WeatherService::class.java)
 

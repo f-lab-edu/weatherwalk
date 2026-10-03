@@ -16,6 +16,7 @@ room ="3.0.3"
 #NETWORK
 retrofit = "3.0.0"
 retrofit-convertor = "3.0.0"
+loggin-interceptor = "4.9.2"
 
 #PARCER
 kotlinx-serialization-json = "1.11.0"
@@ -66,6 +67,7 @@ retrofit-convertor =  { group = "com.squareup.retrofit2" , name = "converter-kot
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx" , name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
+loggin-interceptor = {group = "com.squareup.okhttp3" , name = "logging-interceptor", version.ref = "loggin-interceptor"}
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
