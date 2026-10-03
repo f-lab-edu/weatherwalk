@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.android.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
+
 }
 
 android {
@@ -64,23 +66,26 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
     /*hilt*/
     implementation(libs.hilt.android )
-    implementation(libs.hilt.android.compiler )
+    ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose )
 
     /*local-database*/
     implementation(libs.room)
-    implementation(libs.room.compiler)
+    ksp(libs.room.compiler)
+
 
     /*workManger*/
     implementation(libs.work)
 
     /*network*/
     implementation(libs.retrofit)
+    implementation(libs.retrofit.convertor)
 
 
-
+    implementation(libs.kotlinx.serialization.json)
 
 
 }
