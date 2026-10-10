@@ -79,7 +79,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx" , name = "kotlinx
 
 loggin-interceptor = {group = "com.squareup.okhttp3" , name = "logging-interceptor", version.ref = "loggin-interceptor"}
 
-health-connect =  {group = "androidx.health.connect" , name = "connect-client", version.ref = "health-connect"}
+
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 
 [plugins]
