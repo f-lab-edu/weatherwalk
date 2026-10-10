@@ -98,8 +98,6 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
-    /*health-connect*/
-    implementation(libs.health.connect)
 
 
 
