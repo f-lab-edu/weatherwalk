@@ -15,5 +15,5 @@ data class HourlyWeatherDTO(
     val time: List<String>,
     @SerialName("temperature_2m") val temperature2m : List<Double>,
     val precipitation: List<Double>,
-    @SerialName("weather_code")val weatherCode: WeatherCode
+    @SerialName("weather_code")val weatherCode: List<Int>
 )

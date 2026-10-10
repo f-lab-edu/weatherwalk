@@ -58,13 +58,21 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    //implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+
+    implementation(libs.kotlinx.coroutines.android)
+
+
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.core.ktx)          // ← 추가 (toml 이름을 바꿨다면 그 이름으로)
+
 
 
     /*hilt*/
@@ -75,6 +83,7 @@ dependencies {
     /*local-database*/
     implementation(libs.room)
     ksp(libs.room.compiler)
+    implementation(libs.sqlite.bundled)
 
 
     /*workManger*/
@@ -88,6 +97,9 @@ dependencies {
 
 
     implementation(libs.kotlinx.serialization.json)
+
+    /*health-connect*/
+    implementation(libs.health.connect)
 
 
 
