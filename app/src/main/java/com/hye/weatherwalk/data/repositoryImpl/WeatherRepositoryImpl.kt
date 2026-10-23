@@ -20,9 +20,9 @@ class WeatherRepositoryImpl(
     private val dao: WeatherDao,
 ) : WeatherRepository {
 
-    override suspend fun refreshWeather(lat: Double, lon: Double) {
-        val dto = service.getWeatherForecast(lat, lon)
-        val entities = dto.toEntities(lat, lon)
+    override suspend fun refreshWeather(latitude: Double, longitude: Double) {
+        val dto = service.getWeatherForecast(latitude, longitude)
+        val entities = dto.toEntities(latitude, longitude)
         dao.insertAll(entities)
     }
 
