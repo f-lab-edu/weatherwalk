@@ -35,6 +35,6 @@ object WeatherClient {
         )
         .build()
 
-    val weatherService = retrofit.create(WeatherService::class.java)
+    val weatherService: WeatherService = retrofit.create(WeatherService::class.java)
 
 }

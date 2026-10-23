@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 data class WeatherDTO(
     val latitude: Double,
     val longitude: Double,
-    val hourly : HourlyWeatherDTO
+    val hourly : HourlyWeatherDTO? = null
 )
 
 @Serializable
 data class HourlyWeatherDTO(
-    val time: List<String>,
-    @SerialName("temperature_2m") val temperature2m : List<Double>,
-    val precipitation: List<Double>,
-    @SerialName("weather_code")val weatherCode: WeatherCode
+    val time: List<String> = emptyList(),
+    @SerialName("temperature_2m") val temperature2m : List<Double?> = emptyList(),
+    val precipitation: List<Double?> = emptyList(),
+    @SerialName("weather_code")val weatherCode: List<Int?> = emptyList()
 )
