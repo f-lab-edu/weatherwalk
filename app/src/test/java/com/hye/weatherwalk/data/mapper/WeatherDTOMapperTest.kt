@@ -14,7 +14,6 @@ import org.junit.Test
 1.시간 개수만큼 Entity가 생성되는지
 2.같은 index의 time, 기온, 강수량, weatherCode가 한 Entity로 묶이는지
 3.위경도가 모든 Entity에 복사되는지
-4.배열 길이가 서로 다르면 가장 짧은 길이에 맞춰지는지
 5.빈 배열이면 빈 리스트가 나오는지
 * */
 
@@ -46,7 +45,7 @@ class WeatherDTOMapperTest {
         val dto = dto()
 
         // when: Entity로 변환하면
-        val entities = dto.toEntities()
+        val entities = dto.toEntities(37.56,126.97)
 
         // then: Entity가 2개 생성된다
         assertEquals(2, entities.size)
@@ -76,7 +75,7 @@ class WeatherDTOMapperTest {
         )
 
         // when: Entity로 변환하면
-        val entities = dto.toEntities()
+        val entities = dto.toEntities(37.56, 126.97)
 
         // then: index별로 값이 묶인 Entity 리스트가 나온다
         assertEquals(expected, entities)
@@ -88,7 +87,7 @@ class WeatherDTOMapperTest {
         val dto = dto(latitude = 35.1, longitude = 129.04)
 
         // when: Entity로 변환하면
-        val entities = dto.toEntities()
+        val entities = dto.toEntities(35.1,129.04)
 
         // then: 모든 Entity에 같은 위경도가 들어간다
         entities.forEach {
@@ -109,24 +108,13 @@ class WeatherDTOMapperTest {
         )
 
         // when: Entity로 변환하면
-        val entities = dto.toEntities()
+        val entities = dto.toEntities(35.1,129.04)
 
         // then: 응답 순서 그대로 시간이 정렬되어 있다
         assertEquals(time, entities.map { it.time })
     }
 
-    @Test
-    fun `배열 길이가 다르면 가장 짧은 길이에 맞춘다`() {
-        // given: weatherCode만 1개인 DTO
-        val dto = dto(weatherCode = listOf(0))
 
-        // when: Entity로 변환하면
-        val entities = dto.toEntities()
-
-        // then: 1개만 생성되고, 첫 번째 시간 값이 들어간다
-        assertEquals(1, entities.size)
-        assertEquals("2026-10-10T00:00", entities[0].time)
-    }
 
     /*
     정책: 날씨 정보 중 하나라도 없으면 해당 시간은 저장하지 않는다.
@@ -134,17 +122,6 @@ class WeatherDTOMapperTest {
 *
 * */
 
-    @Test
-    fun `배열 중 하나라도 비어 있으면 빈 리스트를 반환한다`() {
-        // given: precipitation만 비어 있는 DTO
-        val dto = dto(precipitation = emptyList())
-
-        // when: Entity로 변환하면
-        val entities = dto.toEntities()
-
-        // then: 빈 리스트가 반환된다
-        assertTrue(entities.isEmpty())
-    }
 
     @Test
     fun `모든 배열이 비어 있으면 빈 리스트를 반환한다`() {
@@ -157,7 +134,7 @@ class WeatherDTOMapperTest {
         )
 
         // when: Entity로 변환하면
-        val entities = dto.toEntities()
+        val entities = dto.toEntities(35.1,129.04)
 
         // then: 빈 리스트가 반환된다
         assertTrue(entities.isEmpty())

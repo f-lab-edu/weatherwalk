@@ -23,11 +23,10 @@ interface WeatherDao {
     @Query(
         """
         SELECT * FROM hourly_weather
-        WHERE latitude = :latitude AND longitude = :longitude
         ORDER BY time ASC
         """
     )
-    fun observeHourly(latitude: Double, longitude: Double): Flow<List<HourlyWeatherEntity>>
+    fun observeHourly(): Flow<List<HourlyWeatherEntity>>
 
     /**
      * 기준 시간 이전의 오래된 데이터를 삭제한다.
@@ -35,5 +34,12 @@ interface WeatherDao {
      */
     @Query("DELETE FROM hourly_weather WHERE time < :time")
     suspend fun deleteBefore(time: String)
+
+    @Query("""
+    SELECT * FROM hourly_weather
+    WHERE time >= :start AND time < :end
+    ORDER BY time ASC
+""")
+    fun observeBetween(start: String, end: String): Flow<List<HourlyWeatherEntity>>
 
 }

@@ -60,11 +60,11 @@ class WeatherDtoParsingTest {
         // then: temperature_2m, weather_code처럼 이름이 다른 필드도 제대로 들어온다
         assertEquals(
             listOf("2026-10-10T00:00", "2026-10-10T01:00", "2026-10-10T02:00"),
-            hourly.time
+            hourly?.time
         )
-        assertEquals(listOf(15.2, 14.8, 14.1), hourly.temperature2m)
-        assertEquals(listOf(0.0, 0.3, 1.2), hourly.precipitation)
-        assertEquals(listOf(0, 61, 63), hourly.weatherCode)
+        assertEquals(listOf(15.2, 14.8, 14.1), hourly?.temperature2m)
+        assertEquals(listOf(0.0, 0.3, 1.2), hourly?.precipitation)
+        assertEquals(listOf(0, 61, 63), hourly?.weatherCode)
     }
 
     @Test
@@ -76,7 +76,7 @@ class WeatherDtoParsingTest {
         val dto = json.decodeFromString<WeatherDTO>(raw)
 
         // then: ignoreUnknownKeys 덕분에 에러 없이 필요한 값만 꺼낸다
-        assertEquals(3, dto.hourly.time.size)
+        assertEquals(3, dto.hourly?.time?.size)
     }
 
     @Test
@@ -99,7 +99,7 @@ class WeatherDtoParsingTest {
         val dto = json.decodeFromString<WeatherDTO>(raw)
 
         // then
-        assertEquals(15.0, dto.hourly.temperature2m[0], 0.0)
+        assertEquals(15.0, dto.hourly?.temperature2m[0]?:0.0, 0.0)
     }
 
     @Test
@@ -153,14 +153,14 @@ class WeatherDtoParsingTest {
         val raw = sampleResponse
 
         // when: JSON → DTO → Entity
-        val entities = json.decodeFromString<WeatherDTO>(raw).toEntities()
+        val entities = json.decodeFromString<WeatherDTO>(raw).toEntities(37.55,127.0)
 
         // then: 3시간치가 시간별로 묶여 나온다
         assertEquals(3, entities.size)
         with(entities[1]) {
             assertEquals("2026-10-10T01:00", time)
-            assertEquals(14.8, temperature, 0.0)
-            assertEquals(0.3, precipitation, 0.0)
+            assertEquals(14.8, temperature?:0.0, 0.0)
+            assertEquals(0.3, precipitation?:0.0, 0.0)
             assertEquals(61, weatherCode)
             assertEquals(37.55, latitude, 0.0)
         }

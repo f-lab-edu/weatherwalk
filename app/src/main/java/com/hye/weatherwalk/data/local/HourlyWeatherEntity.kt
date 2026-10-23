@@ -1,17 +1,15 @@
 package com.hye.weatherwalk.data.local
 
 import androidx.room3.Entity
+import androidx.room3.PrimaryKey
 
 @Entity(
-    "hourly_weather",
-    primaryKeys = ["latitude", "longitude", "time"]
-
-)
+    tableName = "hourly_weather",)
 data class HourlyWeatherEntity(
+    @PrimaryKey val time: String,
     val latitude: Double,
     val longitude: Double,
-    val time: String,
-    val temperature: Double,
-    val precipitation: Double,
-    val weatherCode: Int,
+    val temperature: Double?,
+    val precipitation: Double?,
+    val weatherCode: Int?
 )
