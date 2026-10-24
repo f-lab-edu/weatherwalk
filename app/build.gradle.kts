@@ -98,6 +98,9 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    /*location*/
+    implementation(libs.gms)
+    implementation(libs.kotlinx.coroutines.play.services)
 
 
 
