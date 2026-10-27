@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.material3)
     //implementation(libs.core.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
 
     implementation(libs.kotlinx.coroutines.android)
@@ -71,7 +72,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.core.ktx)          // ← 추가 (toml 이름을 바꿨다면 그 이름으로)
+    androidTestImplementation(libs.core.ktx)
 
 
 
