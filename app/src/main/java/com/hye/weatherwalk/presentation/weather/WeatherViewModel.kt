@@ -6,67 +6,85 @@ import com.hye.weatherwalk.data.location.LocationProvider
 import com.hye.weatherwalk.domain.model.Coordinates
 import com.hye.weatherwalk.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class WeatherViewModel(
     private val weatherRepository: WeatherRepository,
-    private val locationProvider: LocationProvider
+    private val locationProvider: LocationProvider,
 ) : ViewModel() {
 
+    init {
+        refresh()
+    }
+
+    private sealed interface RefreshStatus {
+        data object Loading : RefreshStatus                     // 요청 중
+        data object Done : RefreshStatus                        // 요청 완료 (성공)
+        data class Failed(val message: String) : RefreshStatus  // 요청 완료 (실패)
+    }
+
+    private val refreshStatus = MutableStateFlow<RefreshStatus>(RefreshStatus.Loading)
+
+    /*  val uiState: StateFlow<WeatherUiState> =
+          weatherRepository.observeHourlyWeather()
+              .map { list -> WeatherUiState.Success(list.map { it.toUi() }) }
+              .stateIn(
+                  scope = viewModelScope,
+                  started = SharingStarted.WhileSubscribed(5000),
+                  initialValue = WeatherUiState.Loading,
+              )*/
+
+    val uiState = combine(weatherRepository.observeHourlyWeather(), refreshStatus) { list, status ->
+        when {
+            list.isNotEmpty() -> WeatherUiState.Success(list.map { it.toUi() })
+            status is RefreshStatus.Loading -> WeatherUiState.Loading
+            status is RefreshStatus.Failed -> WeatherUiState.Error(status.message)
+            else -> WeatherUiState.Empty     // status == Done
+        }
+    }
+
     /*
-    * errorMessage -> null 의미
-    * 1. 최초 진입 시(viewModel 생성 시) : 아무 작업도 안함(errorMessage 초기값)
-    * 2. 첫 번째 loadWeather() 호출 시 : 초기값
-    * 3. loadWeather()호출 실패 한 후 다시 시도할 때 : 이전 에러 메시지를 지움
-    * */
-
-    private val errorMessage = MutableStateFlow<String?>(null)
-
-  /*  val uiState: StateFlow<WeatherUiState> =
-        weatherRepository.observeHourlyWeather()
-            .map { list -> WeatherUiState.Success(list.map { it.toUi() }) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = WeatherUiState.Loading,
-            )*/
-
-    val uiState: StateFlow<WeatherUiState> =
-        combine(weatherRepository.observeHourlyWeather(), errorMessage) { list, error ->
-            when {
-                list.isNotEmpty() -> WeatherUiState.Success(list.map { it.toUi() })  // 데이터가 있으면 항상 보여줌
-                error != null -> WeatherUiState.Error(error)                          // 데이터 없고 실패
-                else -> WeatherUiState.Loading                                        // 데이터 없고 아직 진행 중
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = WeatherUiState.Loading,
-        )
-
-    /*
-    * refreshWeather() API 호출 → 파싱 → 매퍼 → Room 저장
+    * refresh() API 호출 → 파싱 → 매퍼 → Room 저장
     *
     * */
-    fun loadWeather() {
-        viewModelScope.launch {
-            errorMessage.value = null
-            val coordinates = locationProvider.getCurrentLocation() ?: DEFAULT_LOCATION
-            try {
-                weatherRepository.refreshWeather(coordinates.latitude, coordinates.longitude)
-            } catch (e: Exception) {
 
-                errorMessage.value = "날씨 정보를 불러오지 못했어요"
+    fun refresh() {
+        viewModelScope.launch {
+            refreshStatus.value = RefreshStatus.Loading
+
+            refreshStatus.value = try {
+                val location = locationProvider.getCurrentLocation() ?: DEFAULT_LOCATION  // 서울시청
+                weatherRepository.refreshWeather(location.latitude, location.longitude)
+                RefreshStatus.Done
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                RefreshStatus.Failed(e.toUserMessage())
             }
         }
     }
 
+/*    fun loadWeather() {
+        viewModelScope.launch {
+            try {
+                val coordinates = locationProvider.getCurrentLocation() ?: DEFAULT_LOCATION
+                weatherRepository.refreshWeather(coordinates.latitude, coordinates.longitude)
+            } catch (e: Exception) {
+
+            }
+        }
+    }*/
+
     companion object {
         private val DEFAULT_LOCATION = Coordinates(37.5665, 126.9780)
+    }
+
+    private fun Throwable.toUserMessage(): String = when (this) {
+        is java.io.IOException -> "네트워크 연결을 확인해 주세요"
+        is retrofit2.HttpException -> "날씨 서버에 문제가 발생했습니다 (${code()})"
+        else -> "날씨 정보를 불러오지 못했습니다"
     }
 
 }

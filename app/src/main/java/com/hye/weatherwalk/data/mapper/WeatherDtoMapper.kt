@@ -6,9 +6,7 @@ import com.hye.weatherwalk.domain.model.HourlyWeather
 import com.hye.weatherwalk.domain.model.WeatherCode
 import java.time.LocalDateTime
 
-/*
-* 시간별 항목들 중 가장 작은 사이즈 추출
-* */
+
 fun WeatherDTO.toEntities(lat: Double, lon: Double): List<HourlyWeatherEntity> {
     val hourly = hourly ?: return emptyList()
 

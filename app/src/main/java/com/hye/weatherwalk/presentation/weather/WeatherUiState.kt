@@ -3,6 +3,7 @@ package com.hye.weatherwalk.presentation.weather
 sealed interface WeatherUiState {
     data object Loading : WeatherUiState
     data class Success(val items: List<HourlyWeatherUi>) : WeatherUiState
+    data object Empty : WeatherUiState
     data class Error(val message: String) : WeatherUiState
 
 }
