@@ -50,6 +50,7 @@ kotlin {
 
 dependencies {
 
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -94,6 +95,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.convertor)
     implementation(libs.loggin.interceptor)
+
+    /*health-connect*/
+    implementation(libs.health.connect)
 
 
 

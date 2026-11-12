@@ -64,7 +64,7 @@ class WeatherViewModel(
                 RefreshStatus.Failed(e.toUserMessage())
             }
         }
-    }
+    }git
 
 /*    fun loadWeather() {
         viewModelScope.launch {
